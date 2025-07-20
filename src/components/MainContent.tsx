@@ -1,5 +1,4 @@
 import React from 'react';
-import Hero from './Hero';
 import BikeAccommodation from './BikeAccommodation';
 
 const MainContent: React.FC = () => {

@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        type: choice
+        default: 'github-pages'
+        options:
+          - github-pages
 
 permissions:
   contents: read

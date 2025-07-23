@@ -1,12 +1,14 @@
 import Image from 'next/image';
 
 const Hero = () => {
+  const basePath = process.env.NODE_ENV === 'production' ? '/taiwan-bike-trip' : '';
+  
   return (
     <section className="relative h-screen">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/hero_img.jpg"
+          src={`${basePath}/images/hero_img.jpg`}
           alt="Taiwan Bike Tour"
           fill
           className="object-cover"

@@ -3,12 +3,12 @@ const Features = () => {
     {
       icon: '✨',
       title: 'Ride in Style',
-      description: 'We&apos;ve secured our own private driver and support vehicle for the entire week – no panniers, no stress, just you and your bike.'
+      description: 'We\'ve secured our own private driver and support vehicle for the entire week – no panniers, no stress, just you and your bike.'
     },
     {
       icon: '🌊',
       title: 'Scenic East Coast',
-      description: 'We&apos;ll be rolling along the stunning Pacific coastline – think dramatic cliffs, lush jungle, and seaside towns. Every day brings jaw-dropping views.'
+      description: 'We\'ll be rolling along the stunning Pacific coastline – think dramatic cliffs, lush jungle, and seaside towns. Every day brings jaw-dropping views.'
     },
     {
       icon: '⛰️',
@@ -23,7 +23,7 @@ const Features = () => {
     {
       icon: '🍜',
       title: 'Local Culture',
-      description: 'We&apos;ll overnight in vibrant towns like Hualien and Kaohsiung with access to buzzing night markets and authentic Taiwanese eats.'
+      description: 'We\'ll overnight in vibrant towns like Hualien and Kaohsiung with access to buzzing night markets and authentic Taiwanese eats.'
     },
     {
       icon: '📅',

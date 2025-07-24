@@ -29,45 +29,21 @@ jobs:
           
           # Check if this is a group update
           if echo "$PR_TITLE" | grep -qi "group"; then
-            echo "Detected group update, analyzing commit message for version changes..."
+            echo "Detected group update, analyzing commit message for update types..."
             
-            # Get the latest commit message which contains detailed version info
+            # Get the latest commit message which contains structured dependency info
             COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
-            echo "Commit message:"
-            echo "$COMMIT_MESSAGE"
+            echo "Analyzing commit metadata..."
             
-            # Extract version changes from commit message using pattern matching
-            MAJOR_CHANGES=0
-            MINOR_CHANGES=0
-            PATCH_CHANGES=0
+            # Count different update types from the structured YAML in commit message
+            MAJOR_CHANGES=$(echo "$COMMIT_MESSAGE" | grep -c "update-type: version-update:semver-major" || true)
+            MINOR_CHANGES=$(echo "$COMMIT_MESSAGE" | grep -c "update-type: version-update:semver-minor" || true)
+            PATCH_CHANGES=$(echo "$COMMIT_MESSAGE" | grep -c "update-type: version-update:semver-patch" || true)
             
-            # Look for version patterns like "from X.Y.Z to A.B.C"
-            while IFS= read -r line; do
-              if echo "$line" | grep -q "from [0-9]\+\.[0-9]\+\.[0-9]\+ to [0-9]\+\.[0-9]\+\.[0-9]\+"; then
-                OLD_VERSION=$(echo "$line" | grep -o "from [0-9]\+\.[0-9]\+\.[0-9]\+" | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+")
-                NEW_VERSION=$(echo "$line" | grep -o "to [0-9]\+\.[0-9]\+\.[0-9]\+" | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+")
-                
-                if [[ -n "$OLD_VERSION" && -n "$NEW_VERSION" ]]; then
-                  echo "Version change: $OLD_VERSION -> $NEW_VERSION"
-                  
-                  # Parse version components
-                  IFS='.' read -r old_major old_minor old_patch <<< "$OLD_VERSION"
-                  IFS='.' read -r new_major new_minor new_patch <<< "$NEW_VERSION"
-                  
-                  # Determine change type
-                  if [[ $new_major -gt $old_major ]]; then
-                    MAJOR_CHANGES=$((MAJOR_CHANGES + 1))
-                    echo "  -> MAJOR change detected"
-                  elif [[ $new_minor -gt $old_minor ]]; then
-                    MINOR_CHANGES=$((MINOR_CHANGES + 1))
-                    echo "  -> MINOR change detected"
-                  elif [[ $new_patch -gt $old_patch ]]; then
-                    PATCH_CHANGES=$((PATCH_CHANGES + 1))
-                    echo "  -> PATCH change detected"
-                  fi
-                fi
-              fi
-            done <<< "$COMMIT_MESSAGE"
+            # Ensure we have numeric values
+            MAJOR_CHANGES=${MAJOR_CHANGES:-0}
+            MINOR_CHANGES=${MINOR_CHANGES:-0}
+            PATCH_CHANGES=${PATCH_CHANGES:-0}
             
             echo "Summary: $MAJOR_CHANGES major, $MINOR_CHANGES minor, $PATCH_CHANGES patch changes"
             

@@ -294,10 +294,10 @@ const ItineraryEnhanced = () => {
               
               {/* Note */}
               {item.note && (
-                <div className="p-4 bg-amber-50 border-t border-amber-200">
+                <div className="p-4 bg-blue-50 border-t border-blue-200">
                   <div className="flex items-start gap-3">
-                    <div className="text-amber-600 text-lg">⚠️</div>
-                    <p className="text-sm text-amber-800">{item.note}</p>
+                    <div className="text-blue-600 text-lg">💡</div>
+                    <p className="text-sm text-blue-800">{item.note}</p>
                   </div>
                 </div>
               )}

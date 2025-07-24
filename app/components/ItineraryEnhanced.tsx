@@ -74,7 +74,7 @@ const ItineraryEnhanced = () => {
         features:
           'One and only salty hot spring resort in Taiwan, hotel buffet breakfast included',
         bikeStorage: 'Store in the room',
-        qrCode: 'https://maps.app.goo.gl/fK6DiWyB57HEEsX36',
+        qrCode: 'https://maps.app.goo.gl/YMhwb3g1RNDnruJH6',
       },
       note: "Relax in Taiwan's unique salty hot springs",
     },
@@ -197,11 +197,11 @@ const ItineraryEnhanced = () => {
         roomType: 'Single occupancy in double room',
         features: 'Convenient location near MAAP lab',
         bikeStorage: 'Can bring to the room',
-        qrCode: 'https://maps.app.goo.gl/Vqcgapks6j3RTsPv5',
+        qrCode: 'https://maps.app.goo.gl/KYDVbzE2T7oj3WJj8',
       },
       note: 'Celebration dinner and rest after completing the tour',
     },
-  ];
+  ]
 
   return (
     <section className="py-20 bg-gradient-to-b from-gray-50 to-white">

@@ -1,0 +1,141 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: >
+      github.actor == 'dependabot[bot]' &&
+      github.event.pull_request.user.login == 'dependabot[bot]'
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract dependency info
+        id: deps
+        run: |
+          echo "Extracting dependency information from PR title..."
+          
+          # Get PR title
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "PR Title: $PR_TITLE"
+          
+          # Determine if this is a patch or minor update based on common Dependabot patterns
+          if echo "$PR_TITLE" | grep -qE "(patch|Bumps.*from.*[0-9]+\.[0-9]+\.[0-9]+.*to.*[0-9]+\.[0-9]+\.[0-9]+)"; then
+            echo "update_type=patch" >> $GITHUB_OUTPUT
+            echo "safe_update=true" >> $GITHUB_OUTPUT
+            echo "Detected patch update"
+          elif echo "$PR_TITLE" | grep -qE "(minor|Bumps.*from.*[0-9]+\.[0-9]+\..*to.*[0-9]+\.[0-9]+\..*)" && ! echo "$PR_TITLE" | grep -qE "to.*[0-9]+[0-9]\.[0-9]"; then
+            echo "update_type=minor" >> $GITHUB_OUTPUT
+            echo "safe_update=true" >> $GITHUB_OUTPUT
+            echo "Detected minor update"
+          else
+            echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
+            echo "safe_update=false" >> $GITHUB_OUTPUT
+            echo "Detected major or unknown update type"
+          fi
+
+      - name: Check for security updates
+        id: security
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          
+          if echo "$PR_BODY $PR_TITLE" | grep -qi "security\|vulnerability\|CVE"; then
+            echo "is_security_update=true" >> $GITHUB_OUTPUT
+            echo "Detected security update"
+          else
+            echo "is_security_update=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add appropriate labels
+        if: always()
+        run: |
+          UPDATE_TYPE="${{ steps.deps.outputs.update_type }}"
+          IS_SECURITY="${{ steps.security.outputs.is_security_update }}"
+          
+          LABELS="dependencies"
+          
+          # Add update type label
+          if [ "$UPDATE_TYPE" = "patch" ]; then
+            LABELS="$LABELS,dependencies-patch"
+          elif [ "$UPDATE_TYPE" = "minor" ]; then
+            LABELS="$LABELS,dependencies-minor"
+          else
+            LABELS="$LABELS,dependencies-major"
+          fi
+          
+          # Add security label if applicable
+          if [ "$IS_SECURITY" = "true" ]; then
+            LABELS="$LABELS,dependencies-security"
+          fi
+          
+          echo "Adding labels: $LABELS"
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "$LABELS"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-approve safe updates
+        if: >
+          steps.deps.outputs.safe_update == 'true' && 
+          (steps.deps.outputs.update_type == 'patch' || steps.deps.outputs.update_type == 'minor')
+        run: |
+          echo "Auto-approving ${{ steps.deps.outputs.update_type }} update"
+          
+          # Approve the PR
+          gh pr review ${{ github.event.pull_request.number }} --approve --body "✅ Auto-approved ${{ steps.deps.outputs.update_type }} dependency update"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge for safe updates
+        if: >
+          steps.deps.outputs.safe_update == 'true' && 
+          (steps.deps.outputs.update_type == 'patch' || steps.deps.outputs.update_type == 'minor')
+        run: |
+          echo "Enabling auto-merge for ${{ steps.deps.outputs.update_type }} update"
+          
+          # Enable auto-merge with squash
+          gh pr merge ${{ github.event.pull_request.number }} --auto --squash
+          
+          echo "✅ Auto-merge enabled. PR will be merged automatically after all checks pass."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on manual review required
+        if: steps.deps.outputs.safe_update == 'false'
+        run: |
+          echo "Manual review required for ${{ steps.deps.outputs.update_type }} update"
+          
+          COMMENT_BODY="🔍 **Dependabot Auto-merge Status**
+
+          This PR contains a **${{ steps.deps.outputs.update_type }}** update, which requires manual review.
+
+          Only **patch** and **minor** updates are automatically merged for security reasons.
+
+          Please review this PR manually and merge when appropriate."
+          
+          gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_BODY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Dependabot Auto-merge Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Update Type:** ${{ steps.deps.outputs.update_type }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Safe Update:** ${{ steps.deps.outputs.safe_update }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security Update:** ${{ steps.security.outputs.is_security_update }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR Number:** ${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.deps.outputs.safe_update }}" = "true" ]; then
+            echo "- **Action:** Auto-approved and auto-merge enabled ✅" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Action:** Manual review required 👀" >> $GITHUB_STEP_SUMMARY
+          fi

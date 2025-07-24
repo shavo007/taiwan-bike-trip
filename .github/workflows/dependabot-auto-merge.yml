@@ -6,6 +6,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: read
+  checks: read
 
 jobs:
   dependabot:
@@ -130,18 +132,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Auto-approve safe updates
-        if: >
-          steps.deps.outputs.safe_update == 'true' && 
-          (steps.deps.outputs.update_type == 'patch' || steps.deps.outputs.update_type == 'minor')
-        run: |
-          echo "Auto-approving ${{ steps.deps.outputs.update_type }} update"
-          
-          # Approve the PR
-          gh pr review ${{ github.event.pull_request.number }} --approve --body "✅ Auto-approved ${{ steps.deps.outputs.update_type }} dependency update"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Enable auto-merge for safe updates
         if: >
           steps.deps.outputs.safe_update == 'true' && 
@@ -149,7 +139,7 @@ jobs:
         run: |
           echo "Enabling auto-merge for ${{ steps.deps.outputs.update_type }} update"
           
-          # Enable auto-merge with squash
+          # Enable auto-merge with squash (skip approval requirement for patch/minor updates)
           gh pr merge ${{ github.event.pull_request.number }} --auto --squash
           
           echo "✅ Auto-merge enabled. PR will be merged automatically after all checks pass."

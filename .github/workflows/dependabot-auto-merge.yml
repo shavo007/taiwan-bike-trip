@@ -33,7 +33,7 @@ jobs:
             
             # Get the latest commit message which contains structured dependency info
             COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
-            echo "Analyzing commit metadata..."
+            echo "Analyzing commit metadata for version detection..."
             
             # Count different update types from the structured YAML in commit message
             MAJOR_CHANGES=$(echo "$COMMIT_MESSAGE" | grep -c "update-type: version-update:semver-major" || true)

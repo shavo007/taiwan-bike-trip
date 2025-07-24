@@ -40,43 +40,42 @@ jobs:
             MINOR_CHANGES=0
             PATCH_CHANGES=0
             
-          # Look for version changes in the diff
-          while IFS= read -r line; do
-            if [[ "$line" =~ ^[-+].*\"[^\"]*\":[[:space:]]*\"[^\"]*[0-9]+\.[0-9]+\.[0-9]+[^\"]*\" ]]; then
-              if [[ "$line" =~ ^- ]]; then
-                # This is the old version
-                OLD_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')
-              elif [[ "$line" =~ ^+ ]]; then
-                # This is the new version
-                NEW_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')
-                
-                if [[ -n "$OLD_VERSION" && -n "$NEW_VERSION" ]]; then
-                    echo "Version change: $OLD_VERSION -> $NEW_VERSION"
-                    
-                    # Parse version components
-                    IFS='.' read -r old_major old_minor old_patch <<< "$OLD_VERSION"
-                    IFS='.' read -r new_major new_minor new_patch <<< "$NEW_VERSION"
-                    
-                    # Determine change type
-                    if [[ $new_major -gt $old_major ]]; then
-                      MAJOR_CHANGES=$((MAJOR_CHANGES + 1))
-                      echo "  -> MAJOR change detected"
-                    elif [[ $new_minor -gt $old_minor ]]; then
-                      MINOR_CHANGES=$((MINOR_CHANGES + 1))
-                      echo "  -> MINOR change detected"
-                    elif [[ $new_patch -gt $old_patch ]]; then
-                      PATCH_CHANGES=$((PATCH_CHANGES + 1))
-                      echo "  -> PATCH change detected"
-                    fi
-                    
-                    OLD_VERSION=""
-                    NEW_VERSION=""
-                  fi
-                fi
-              fi
-            done < /tmp/package_diff.txt
+          # Extract all old and new versions and compare them
+          OLD_VERSIONS=$(git diff origin/main -- package.json | grep "^-" | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+")
+          NEW_VERSIONS=$(git diff origin/main -- package.json | grep "^+" | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+")
+          
+          echo "Old versions found: $OLD_VERSIONS"
+          echo "New versions found: $NEW_VERSIONS"
+          
+          # Convert to arrays
+          OLD_ARRAY=($OLD_VERSIONS)
+          NEW_ARRAY=($NEW_VERSIONS)
+          
+          # Compare each pair
+          for i in "${!OLD_ARRAY[@]}"; do
+            OLD_VERSION="${OLD_ARRAY[i]}"
+            NEW_VERSION="${NEW_ARRAY[i]}"
             
-            echo "Summary: $MAJOR_CHANGES major, $MINOR_CHANGES minor, $PATCH_CHANGES patch changes"
+            if [[ -n "$OLD_VERSION" && -n "$NEW_VERSION" ]]; then
+              echo "Version change: $OLD_VERSION -> $NEW_VERSION"
+              
+              # Parse version components
+              IFS='.' read -r old_major old_minor old_patch <<< "$OLD_VERSION"
+              IFS='.' read -r new_major new_minor new_patch <<< "$NEW_VERSION"
+              
+              # Determine change type
+              if [[ $new_major -gt $old_major ]]; then
+                MAJOR_CHANGES=$((MAJOR_CHANGES + 1))
+                echo "  -> MAJOR change detected"
+              elif [[ $new_minor -gt $old_minor ]]; then
+                MINOR_CHANGES=$((MINOR_CHANGES + 1))
+                echo "  -> MINOR change detected"
+              elif [[ $new_patch -gt $old_patch ]]; then
+                PATCH_CHANGES=$((PATCH_CHANGES + 1))
+                echo "  -> PATCH change detected"
+              fi
+            fi
+          done            echo "Summary: $MAJOR_CHANGES major, $MINOR_CHANGES minor, $PATCH_CHANGES patch changes"
             
             # Determine overall update type
             if [[ $MAJOR_CHANGES -gt 0 ]]; then

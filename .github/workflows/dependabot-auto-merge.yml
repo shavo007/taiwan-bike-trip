@@ -31,8 +31,9 @@ jobs:
           if echo "$PR_TITLE" | grep -qi "group"; then
             echo "Detected group update, analyzing commit message for update types..."
             
-            # Get the latest commit message which contains structured dependency info
-            COMMIT_MESSAGE=$(git log --format=%B -n 1 HEAD)
+            # Get the Dependabot commit message which contains structured dependency info
+            # Use the PR head SHA directly instead of HEAD to avoid merge commit issues
+            COMMIT_MESSAGE=$(git log --format=%B -n 1 ${{ github.event.pull_request.head.sha }})
             echo "Analyzing commit metadata for version detection..."
             
             # Count different update types from the structured YAML in commit message

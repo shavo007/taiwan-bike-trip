@@ -48,7 +48,9 @@ jobs:
                 OLD_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')
               elif [[ "$line" =~ ^+ ]]; then
                 # This is the new version
-                NEW_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')                  if [[ -n "$OLD_VERSION" && -n "$NEW_VERSION" ]]; then
+                NEW_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')
+                
+                if [[ -n "$OLD_VERSION" && -n "$NEW_VERSION" ]]; then
                     echo "Version change: $OLD_VERSION -> $NEW_VERSION"
                     
                     # Parse version components

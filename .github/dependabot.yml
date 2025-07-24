@@ -114,5 +114,3 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "actions/cache"
         update-types: ["version-update:semver-major"]
-        
-    versioning-strategy: "increase-if-necessary"

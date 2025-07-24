@@ -27,19 +27,90 @@ jobs:
           PR_TITLE="${{ github.event.pull_request.title }}"
           echo "PR Title: $PR_TITLE"
           
-          # Determine if this is a patch or minor update based on common Dependabot patterns
-          if echo "$PR_TITLE" | grep -qE "(patch|Bumps.*from.*[0-9]+\.[0-9]+\.[0-9]+.*to.*[0-9]+\.[0-9]+\.[0-9]+)"; then
-            echo "update_type=patch" >> $GITHUB_OUTPUT
-            echo "safe_update=true" >> $GITHUB_OUTPUT
-            echo "Detected patch update"
-          elif echo "$PR_TITLE" | grep -qE "(minor|Bumps.*from.*[0-9]+\.[0-9]+\..*to.*[0-9]+\.[0-9]+\..*)" && ! echo "$PR_TITLE" | grep -qE "to.*[0-9]+[0-9]\.[0-9]"; then
-            echo "update_type=minor" >> $GITHUB_OUTPUT
-            echo "safe_update=true" >> $GITHUB_OUTPUT
-            echo "Detected minor update"
+          # Check if this is a group update
+          if echo "$PR_TITLE" | grep -qi "group"; then
+            echo "Detected group update, analyzing actual changes..."
+            
+            # Get the diff to analyze actual version changes
+            git fetch origin ${{ github.event.pull_request.base.ref }}
+            git diff origin/${{ github.event.pull_request.base.ref }} -- package.json > /tmp/package_diff.txt
+            
+            # Extract version changes from package.json
+            MAJOR_CHANGES=0
+            MINOR_CHANGES=0
+            PATCH_CHANGES=0
+            
+            # Look for version changes in the diff
+            while IFS= read -r line; do
+              if [[ "$line" =~ ^[-+][[:space:]]*\".*\":[[:space:]]*\".*[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+                if [[ "$line" =~ ^- ]]; then
+                  # This is the old version
+                  OLD_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')
+                elif [[ "$line" =~ ^+ ]]; then
+                  # This is the new version
+                  NEW_VERSION=$(echo "$line" | sed -n 's/.*"\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\)".*/\1/p')
+                  
+                  if [[ -n "$OLD_VERSION" && -n "$NEW_VERSION" ]]; then
+                    echo "Version change: $OLD_VERSION -> $NEW_VERSION"
+                    
+                    # Parse version components
+                    IFS='.' read -r old_major old_minor old_patch <<< "$OLD_VERSION"
+                    IFS='.' read -r new_major new_minor new_patch <<< "$NEW_VERSION"
+                    
+                    # Determine change type
+                    if [[ $new_major -gt $old_major ]]; then
+                      MAJOR_CHANGES=$((MAJOR_CHANGES + 1))
+                      echo "  -> MAJOR change detected"
+                    elif [[ $new_minor -gt $old_minor ]]; then
+                      MINOR_CHANGES=$((MINOR_CHANGES + 1))
+                      echo "  -> MINOR change detected"
+                    elif [[ $new_patch -gt $old_patch ]]; then
+                      PATCH_CHANGES=$((PATCH_CHANGES + 1))
+                      echo "  -> PATCH change detected"
+                    fi
+                    
+                    OLD_VERSION=""
+                    NEW_VERSION=""
+                  fi
+                fi
+              fi
+            done < /tmp/package_diff.txt
+            
+            echo "Summary: $MAJOR_CHANGES major, $MINOR_CHANGES minor, $PATCH_CHANGES patch changes"
+            
+            # Determine overall update type
+            if [[ $MAJOR_CHANGES -gt 0 ]]; then
+              echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
+              echo "safe_update=false" >> $GITHUB_OUTPUT
+              echo "Detected major changes in group update"
+            elif [[ $MINOR_CHANGES -gt 0 ]]; then
+              echo "update_type=minor" >> $GITHUB_OUTPUT
+              echo "safe_update=true" >> $GITHUB_OUTPUT
+              echo "Detected minor changes in group update"
+            elif [[ $PATCH_CHANGES -gt 0 ]]; then
+              echo "update_type=patch" >> $GITHUB_OUTPUT
+              echo "safe_update=true" >> $GITHUB_OUTPUT
+              echo "Detected patch changes in group update"
+            else
+              echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
+              echo "safe_update=false" >> $GITHUB_OUTPUT
+              echo "Could not determine update type for group update"
+            fi
           else
-            echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
-            echo "safe_update=false" >> $GITHUB_OUTPUT
-            echo "Detected major or unknown update type"
+            # Individual dependency update - use existing regex logic
+            if echo "$PR_TITLE" | grep -qE "(patch|Bumps.*from.*[0-9]+\.[0-9]+\.[0-9]+.*to.*[0-9]+\.[0-9]+\.[0-9]+)"; then
+              echo "update_type=patch" >> $GITHUB_OUTPUT
+              echo "safe_update=true" >> $GITHUB_OUTPUT
+              echo "Detected patch update"
+            elif echo "$PR_TITLE" | grep -qE "(minor|Bumps.*from.*[0-9]+\.[0-9]+\..*to.*[0-9]+\.[0-9]+\..*)" && ! echo "$PR_TITLE" | grep -qE "to.*[0-9]+[0-9]\.[0-9]"; then
+              echo "update_type=minor" >> $GITHUB_OUTPUT
+              echo "safe_update=true" >> $GITHUB_OUTPUT
+              echo "Detected minor update"
+            else
+              echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
+              echo "safe_update=false" >> $GITHUB_OUTPUT
+              echo "Detected major or unknown update type"
+            fi
           fi
 
       - name: Check for security updates

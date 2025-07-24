@@ -44,10 +44,10 @@ jobs:
 
       - name: Check for security updates
         id: security
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          PR_BODY="${{ github.event.pull_request.body }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          
           if echo "$PR_BODY $PR_TITLE" | grep -qi "security\|vulnerability\|CVE"; then
             echo "is_security_update=true" >> $GITHUB_OUTPUT
             echo "Detected security update"
@@ -110,20 +110,15 @@ jobs:
 
       - name: Comment on manual review required
         if: steps.deps.outputs.safe_update == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Manual review required for ${{ steps.deps.outputs.update_type }} update"
           
-          COMMENT_BODY="🔍 **Dependabot Auto-merge Status**
-
-          This PR contains a **${{ steps.deps.outputs.update_type }}** update, which requires manual review.
-
-          Only **patch** and **minor** updates are automatically merged for security reasons.
-
-          Please review this PR manually and merge when appropriate."
+          # Create multiline comment using printf to avoid YAML issues
+          COMMENT_MESSAGE=$(printf "🔍 **Dependabot Auto-merge Status**\n\nThis PR contains a **${{ steps.deps.outputs.update_type }}** update, which requires manual review.\n\nOnly **patch** and **minor** updates are automatically merged for security reasons.\n\nPlease review this PR manually and merge when appropriate.")
           
-          gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_BODY"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_MESSAGE"
 
       - name: Summary
         if: always()

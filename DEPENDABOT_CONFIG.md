@@ -109,9 +109,45 @@ To temporarily disable Dependabot:
 - Review dependency insights for update patterns
 - Monitor PR merge rates to adjust grouping if needed
 
+## Auto-merge Workflow
+
+This repository includes an automated workflow (`.github/workflows/dependabot-auto-merge.yml`) that safely handles Dependabot PRs:
+
+### Automatic Actions (Patch & Minor Updates)
+✅ **Auto-approved and auto-merged** for:
+- Patch updates (e.g., `1.2.3` → `1.2.4`)
+- Minor updates (e.g., `1.2.0` → `1.3.0`)
+
+### Manual Review Required (Major Updates)
+🔍 **Manual review** required for:
+- Major updates (e.g., `1.0.0` → `2.0.0`)
+- Unknown update patterns
+
+### Security Handling
+🔒 **Special handling** for security updates:
+- Automatically labeled with `dependencies-security`
+- Can be auto-merged if patch/minor
+- Prioritized for immediate attention
+
+### Workflow Features
+
+1. **Pattern Detection**: Analyzes PR titles to determine update types
+2. **Safety Checks**: Only processes PRs from `dependabot[bot]`
+3. **Semantic Labels**: Automatically applies appropriate labels
+4. **Audit Trail**: Provides detailed logging and summaries
+5. **Smart Comments**: Explains actions taken or why manual review is needed
+
+### Benefits
+
+- **Reduced Manual Work**: Safe updates merge automatically
+- **Security Focus**: Priority handling for security updates
+- **Risk Management**: Major updates require human oversight
+- **Complete Visibility**: All actions are logged and auditable
+
 ## Related Files
 
 - `.github/dependabot.yml` - Main configuration file
+- `.github/workflows/dependabot-auto-merge.yml` - Auto-merge workflow
 - `package.json` - npm dependencies being monitored
 - `.github/workflows/deploy.yml` - GitHub Actions being monitored
 - `DEPLOYMENT_OPTIMIZATIONS.md` - CI/CD performance documentation

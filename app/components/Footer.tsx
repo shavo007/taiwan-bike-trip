@@ -25,9 +25,12 @@ const Footer = () => {
             <h4 className="text-lg font-medium mb-4">Contact</h4>
             <div className="space-y-2 text-gray-400">
               <p>Ready to join us?</p>
-              <button className="bg-white text-black px-6 py-3 rounded-sm hover:bg-gray-100 transition-colors mt-4">
+              <a 
+                href="mailto:hello@ekhoekho.global?subject=Taiwan Bike Tour 2025 - Contact Inquiry&body=Hi there,%0D%0A%0D%0AI'd like to get in touch about the Taiwan Bike Tour 2025. Please send me more information.%0D%0A%0D%0AThank you!"
+                className="bg-white text-black px-6 py-3 rounded-sm hover:bg-gray-100 transition-colors mt-4 inline-block"
+              >
                 Get in Touch
-              </button>
+              </a>
             </div>
           </div>
         </div>

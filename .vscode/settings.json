@@ -1,0 +1,58 @@
+{
+  "git.allowForcePush": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.confirmNoVerifyCommit": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "git.alwaysSignOff": false,
+  "git.postCommitCommand": "none",
+  "git.showPushSuccessNotification": true,
+  
+  // GitHub Copilot Agent Mode Settings
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true
+  },
+  "github.copilot.editor.enableAutoCompletions": true,
+  "github.copilot.chat.enabled": true,
+  "github.copilot.chat.welcomeMessage": "never",
+  "github.copilot.advanced": {
+    "secret_key": "github.copilot.enable",
+    "length": 500,
+    "temperature": "",
+    "top_p": "",
+    "stops": {
+      "*": ["\n\n\n"]
+    },
+    "indentationMode": {
+      "*": "space",
+      "python": "space",
+      "javascript": "space",
+      "typescript": "space"
+    }
+  },
+  
+  // Enhanced agent mode settings
+  "workbench.editorAssociations": {
+    "*.md": "vscode.markdown.preview.editor"
+  },
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  
+  // Terminal and command settings for agent operations
+  "terminal.integrated.confirmOnExit": "never",
+  "terminal.integrated.confirmOnKill": "never",
+  "extensions.ignoreRecommendations": false,
+  
+  // Workspace trust for agent operations
+  "security.workspace.trust.enabled": false,
+  "security.workspace.trust.startupPrompt": "never",
+  "security.workspace.trust.banner": "never"
+}

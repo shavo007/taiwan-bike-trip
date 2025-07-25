@@ -36,9 +36,12 @@ const Hero = () => {
             Experience the breathtaking beauty of Taiwan&apos;s east coast on an exclusive cycling adventure through dramatic cliffs, lush jungles, and seaside towns.
           </p>
           <div className="flex gap-4 flex-col sm:flex-row">
-            <button className="bg-white text-black px-8 py-4 rounded-sm hover:bg-gray-100 transition-all duration-300 text-lg font-light transform hover:scale-105">
+            <a 
+              href="mailto:hello@ekhoekho.global?subject=Taiwan Bike Tour 2025 - Booking Inquiry&body=Hi there,%0D%0A%0D%0AI'm interested in joining the Taiwan Bike Tour 2025 (October 26 - November 2). Could you please send me more details about booking and availability?%0D%0A%0D%0AThank you!"
+              className="bg-white text-black px-8 py-4 rounded-sm hover:bg-gray-100 transition-all duration-300 text-lg font-light transform hover:scale-105 text-center"
+            >
               Book Your Spot
-            </button>
+            </a>
             <button 
               onClick={() => scrollToSection('itinerary')}
               className="border border-white text-white px-8 py-4 rounded-sm hover:bg-white/10 transition-all duration-300 text-lg font-light"

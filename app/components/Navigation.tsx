@@ -47,13 +47,16 @@ const Navigation = () => {
             ))}
           </div>
           
-          <button className={`px-6 py-2 rounded-sm transition-all ${
-            isScrolled 
-              ? 'bg-black text-white hover:bg-gray-800' 
-              : 'bg-white text-black hover:bg-gray-100'
-          }`}>
+          <a 
+            href="mailto:hello@ekhoekho.global?subject=Taiwan Bike Tour 2025 - Booking Inquiry&body=Hi there,%0D%0A%0D%0AI'm interested in joining the Taiwan Bike Tour 2025 (October 26 - November 2). Could you please send me more details about booking and availability?%0D%0A%0D%0AThank you!"
+            className={`px-6 py-2 rounded-sm transition-all ${
+              isScrolled 
+                ? 'bg-black text-white hover:bg-gray-800' 
+                : 'bg-white text-black hover:bg-gray-100'
+            }`}
+          >
             Book Now
-          </button>
+          </a>
         </div>
       </div>
     </nav>

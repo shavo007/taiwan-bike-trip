@@ -35,7 +35,7 @@ const ItineraryEnhanced = () => {
       title: 'Southern Coast Adventure',
       description:
         "Begin your cycling journey at 7am, departing from Kaohsiung and riding south along Taiwan's stunning coastline to Kenting.",
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3327904070859937976',
       details: {
         distance: '104.5km',
         estimatedTime: '4.6 hours',
@@ -60,7 +60,7 @@ const ItineraryEnhanced = () => {
       title: 'Hot Springs & Mountains',
       description:
         'Continue your journey inland towards the mountains, ending at the relaxing hot springs of Jinlung.',
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3327907356470638110',
       details: {
         distance: '117.31km',
         estimatedTime: '4.4 hours',
@@ -85,7 +85,7 @@ const ItineraryEnhanced = () => {
       title: 'Forest Retreat',
       description:
         "Cycle through Taiwan's beautiful forest landscapes and arrive at the eco-friendly Forest 3030 Hostel.",
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3327913061249090078',
       details: {
         distance: '114km',
         estimatedTime: '4.4 hours',
@@ -110,7 +110,7 @@ const ItineraryEnhanced = () => {
       title: 'Eastern Coast Beauty',
       description:
         "Ride towards Taiwan's dramatic eastern coast and the vibrant city of Hualien.",
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3327915611232641162',
       details: {
         distance: '112km',
         estimatedTime: 'TBC',
@@ -160,7 +160,7 @@ const ItineraryEnhanced = () => {
       title: 'Mountain Descent & East Coast Finale',
       description:
         "Descend from the high mountains of Lishan through spectacular scenery to the coastal plains of Yilan. Experience dramatic elevation changes as you cycle from Taiwan's alpine regions down to the beautiful northeastern coastline.",
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3327919303200876062',
       details: {
         distance: '110.0km',
         estimatedTime: '4.2 hours',
@@ -184,7 +184,7 @@ const ItineraryEnhanced = () => {
       title: 'Final Celebration',
       description:
         'Complete your epic journey by cycling to Taipei. Celebrate at MAAP Lab and rest after your incredible adventure.',
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3327920394931803678',
       details: {
         distance: '106.12km',
         estimatedTime: '4.2 hours',

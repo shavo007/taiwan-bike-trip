@@ -21,8 +21,8 @@ const TourStats = () => {
       description: 'Total distance covered'
     },
     {
-      number: '6,000+',
-      targetValue: 6000,
+      number: '10,000+',
+      targetValue: 10000,
       unit: 'M',
       description: 'Total elevation gain'
     },
@@ -84,7 +84,7 @@ const TourStats = () => {
       case 1: // KM
         return value >= 750 ? '750+' : value.toString();
       case 2: // Elevation
-        return value >= 6000 ? '6,000+' : value.toLocaleString();
+        return value >= 10000 ? '10,000+' : value.toLocaleString();
       default:
         return value.toString();
     }

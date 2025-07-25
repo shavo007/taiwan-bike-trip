@@ -132,14 +132,14 @@ const ItineraryEnhanced = () => {
       day: 'Day 5',
       date: 'Thursday 30th October 2025',
       location: 'Hualien to Lishan',
-      title: 'Mountain Ascent',
+      title: 'Mountain Ascent - Taiwan KOM',
       description:
         "Challenge yourself with a climb to the high-altitude Lishan Guest House in Taiwan's central mountains.",
-      stravaRouteID: '3367020249280943442',
+      stravaRouteID: '3383647444636415170',
       details: {
-        distance: '128km',
+        distance: '147km',
         estimatedTime: 'TBC',
-        elevation: '+2900m',
+        elevation: '+5000m',
       },
       accommodation: {
         name: 'Lishan Guest House',

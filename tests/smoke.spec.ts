@@ -2,7 +2,9 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Smoke Tests', () => {
   test('Basic page loads successfully', async ({ page }) => {
-    await page.goto('/');
+    // Use full URL when BASE_URL is set (deployed testing), otherwise use relative path (local dev)
+    const targetUrl = process.env.BASE_URL || '/';
+    await page.goto(targetUrl);
     
     // Page should load without errors
     await expect(page).toHaveTitle(/Taiwan/);
@@ -12,7 +14,9 @@ test.describe('Smoke Tests', () => {
   });
 
   test('Navigation and layout elements are present', async ({ page }) => {
-    await page.goto('/');
+    // Use full URL when BASE_URL is set (deployed testing), otherwise use relative path (local dev)
+    const targetUrl = process.env.BASE_URL || '/';
+    await page.goto(targetUrl);
     
     // Should have a main heading
     const mainHeading = page.getByRole('heading', { level: 1 });
@@ -23,7 +27,9 @@ test.describe('Smoke Tests', () => {
   });
 
   test('Static assets load correctly', async ({ page }) => {
-    await page.goto('/');
+    // Use full URL when BASE_URL is set (deployed testing), otherwise use relative path (local dev)
+    const targetUrl = process.env.BASE_URL || '/';
+    await page.goto(targetUrl);
     
     // Wait for page to load with a reasonable timeout
     await page.waitForLoadState('domcontentloaded');

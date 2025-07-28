@@ -1,0 +1,5 @@
+# Run lint-staged for formatting and linting
+npx lint-staged
+
+# Run smoke tests to ensure basic functionality works
+npm run test:smoke

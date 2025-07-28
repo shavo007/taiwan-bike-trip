@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+
+# Test reports
+playwright-report/
+test-results/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+
+# PDFs and images
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+
+# Python files (not part of the main project)
+*.py
+
+# Lock files
+package-lock.json
+yarn.lock

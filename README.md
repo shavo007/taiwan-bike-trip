@@ -141,25 +141,30 @@ npm run build
 ## 🛠️ Technologies Used
 
 ### Core Framework
+
 - **Next.js 15.4.4** - React framework with App Router and static export
 - **React 19** - Latest React with enhanced performance
 - **TypeScript** - Type-safe development
 
 ### Styling & UI
+
 - **Tailwind CSS v4** - Utility-first CSS framework
 - **PostCSS** - CSS processing and optimization
 
 ### Testing & Quality
+
 - **Playwright ^1.54.1** - End-to-end testing framework
 - **ESLint** - Code linting and quality enforcement
 - **Multi-browser testing** - Chromium, Firefox, WebKit support
 
 ### Integrations
+
 - **Strava API** - Route embedding and cycling data
 - **QR Code Generation** - Custom branded accommodation codes
 - **Google Maps** - Location linking via short URLs
 
 ### Development Tools
+
 - **Turbopack** - Fast development builds
 - **GitHub Actions** - Automated testing and deployment
 - **MCP Server** - Custom tour data integration
@@ -171,6 +176,41 @@ npm run build
 - **Difficulty**: Progressive from +313m (Day 1) to +5,000m (Day 5)
 - **Accommodations**: 7 locations with QR codes and booking details
 - **Cycling Days**: 7 routes with Strava integration
+
+## 🔧 Development Workflow
+
+### Git Hooks (Automated Quality Checks)
+
+This project uses [Husky](https://typicode.github.io/husky/) to run automated quality checks on every commit:
+
+#### Pre-commit Hook
+
+- **Code Formatting**: Runs Prettier on staged files
+- **Linting**: Runs ESLint with auto-fix on staged files
+- **Smoke Tests**: Runs critical Playwright tests (`npm run test:smoke`)
+
+#### Commit Message Hook
+
+- Enforces conventional commit format: `type(scope): description`
+- Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- Example: `feat(components): add QR code display`
+
+### Testing Commands
+
+```bash
+npm test              # Run all Playwright tests
+npm run test:smoke    # Run smoke tests only (used in pre-commit)
+npm run test:headed   # Run tests with visible browser
+npm run test:ui       # Interactive test runner
+```
+
+### Code Quality Commands
+
+```bash
+npm run lint          # Check code style
+npm run lint:fix      # Fix linting issues automatically
+npx prettier --write . # Format all files
+```
 
 ## 🤝 Contributing
 

@@ -1,3 +1,7 @@
+# Load nvm if available
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
 # Run lint-staged for formatting and linting
 npx lint-staged
 

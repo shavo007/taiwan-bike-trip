@@ -21,8 +21,7 @@ const Itinerary = () => {
         type: '4 star hotel',
         price: '$TBC (AUD)',
         roomType: 'Shared room - two single beds',
-        features:
-          'Central location, convenient, lots of night markets and restaurants nearby',
+        features: 'Central location, convenient, lots of night markets and restaurants nearby',
         bikeStorage: 'Can bring to the room',
         qrCode: 'https://maps.app.goo.gl/LdtcdbYVnX67zifD8',
       },
@@ -46,8 +45,7 @@ const Itinerary = () => {
         type: 'Beachside resort',
         price: '$TBC (AUD)',
         roomType: 'Shared room - two double beds in a room',
-        features:
-          'Iconic beachside location, facing the ocean, lots of facilities',
+        features: 'Iconic beachside location, facing the ocean, lots of facilities',
         bikeStorage: 'Store in a meeting room',
         qrCode: 'https://maps.app.goo.gl/VKeZeouzairGB92y5',
       },
@@ -71,8 +69,7 @@ const Itinerary = () => {
         type: 'Hot spring resort',
         price: '$TBC (AUD)',
         roomType: 'Shared room - two single beds',
-        features:
-          'One and only salty hot spring resort in Taiwan, hotel buffet breakfast included',
+        features: 'One and only salty hot spring resort in Taiwan, hotel buffet breakfast included',
         bikeStorage: 'Store in the room',
         qrCode: 'https://maps.app.goo.gl/fK6DiWyB57HEEsX36',
       },
@@ -108,8 +105,7 @@ const Itinerary = () => {
       date: 'Wednesday 29th October 2025',
       location: 'Antong to Hualien',
       title: 'Eastern Coast Beauty',
-      description:
-        "Ride towards Taiwan's dramatic eastern coast and the vibrant city of Hualien.",
+      description: "Ride towards Taiwan's dramatic eastern coast and the vibrant city of Hualien.",
       stravaRouteID: '3367020249280943442',
       details: {
         distance: '112km',
@@ -121,8 +117,7 @@ const Itinerary = () => {
         type: 'Hotel',
         price: '$TBC (AUD)',
         roomType: 'Shared room - two single beds',
-        features:
-          'Convenient location, facing the ocean, hotel buffet breakfast included',
+        features: 'Convenient location, facing the ocean, hotel buffet breakfast included',
         bikeStorage: 'Store at lobby, guarded',
         qrCode: 'https://maps.app.goo.gl/VYGJUXhEpg6X9Xg78',
       },
@@ -146,8 +141,7 @@ const Itinerary = () => {
         type: 'Mountain guest house',
         price: '$TBC (AUD)',
         roomType: 'Shared room - two single beds',
-        features:
-          'Most iconic mountain location, traditional building with lots of history',
+        features: 'Most iconic mountain location, traditional building with lots of history',
         bikeStorage: 'Store in a meeting room',
         qrCode: 'https://maps.app.goo.gl/1BRHQo1GJPwA7rM4A',
       },
@@ -201,19 +195,24 @@ const Itinerary = () => {
       },
       note: 'Celebration dinner and rest after completing the tour',
     },
-  ]
+  ];
 
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-light text-gray-900 mb-4">7-Day Taiwan Cycling Adventure</h2>
-          <p className="text-lg text-gray-600">Experience the best of Taiwan from coast to mountains</p>
+          <p className="text-lg text-gray-600">
+            Experience the best of Taiwan from coast to mountains
+          </p>
         </div>
-        
+
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {schedule.map((item) => (
-            <div key={`${item.day}-${item.title}`} className="p-6 border border-gray-100 hover:border-gray-200 transition-colors rounded-lg">
+            <div
+              key={`${item.day}-${item.title}`}
+              className="p-6 border border-gray-100 hover:border-gray-200 transition-colors rounded-lg"
+            >
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <div className="text-sm font-medium text-blue-600 mb-1">{item.day}</div>
@@ -223,7 +222,7 @@ const Itinerary = () => {
               </div>
               <h3 className="text-xl font-light text-gray-900 mb-3">{item.title}</h3>
               <p className="text-gray-600 mb-4">{item.description}</p>
-              
+
               {/* Cycling Details */}
               <div className="mb-4 p-3 bg-blue-50 rounded-lg">
                 <h4 className="font-medium text-blue-800 mb-2">Cycling Details</h4>
@@ -245,26 +244,30 @@ const Itinerary = () => {
 
               {/* Strava Route - only show for cycling days */}
               {item.day !== 'Day 0' && (
-                <StravaRouteEmbed 
+                <StravaRouteEmbed
                   location={item.location}
-                  routeId={item.stravaRouteID || "placeholder-route-id"}
+                  routeId={item.stravaRouteID || 'placeholder-route-id'}
                 />
               )}
-              
+
               {/* Accommodation Details */}
               <div className="border-t pt-4 mt-4">
                 <h4 className="font-medium text-gray-800 mb-2">Accommodation</h4>
                 <div className="text-sm space-y-1">
                   <div className="font-medium text-gray-700">{item.accommodation.name}</div>
-                  <div className="text-gray-600">{item.accommodation.type} • {item.accommodation.price}</div>
+                  <div className="text-gray-600">
+                    {item.accommodation.type} • {item.accommodation.price}
+                  </div>
                   <div className="text-gray-600">{item.accommodation.roomType}</div>
                   <div className="text-gray-500 text-xs">{item.accommodation.features}</div>
                   <div className="text-blue-600 text-xs">🚲 {item.accommodation.bikeStorage}</div>
                   {item.accommodation.qrCode && (
                     <div className="mt-2 p-2 bg-gray-50 rounded border-l-4 border-green-400">
-                      <div className="text-xs text-gray-700 font-medium mb-2">📱 Location QR Code</div>
-                      <QRCodeDisplay 
-                        value={item.accommodation.qrCode} 
+                      <div className="text-xs text-gray-700 font-medium mb-2">
+                        📱 Location QR Code
+                      </div>
+                      <QRCodeDisplay
+                        value={item.accommodation.qrCode}
                         size={100}
                         className="mx-auto"
                       />

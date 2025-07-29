@@ -9,26 +9,34 @@ This project includes a Model Context Protocol (MCP) server that provides AI-acc
 ## Available Tools
 
 ### 1. `get_tour_info`
+
 Get basic information about the Taiwan Bike Tour
+
 - **Parameters**: None
 - **Returns**: Tour overview including dates, route, distance, elevation, and contact info
 
-### 2. `get_daily_itinerary` 
+### 2. `get_daily_itinerary`
+
 Get detailed itinerary for a specific day
-- **Parameters**: 
+
+- **Parameters**:
   - `day` (number): Day number (1-7) - optional, omit for all days
 - **Returns**: Detailed information for the specified day or all days
 
 ### 3. `calculate_tour_stats`
+
 Calculate various statistics about the tour
+
 - **Parameters**: None
 - **Returns**: Total distance, elevation, active days, and averages
 
 ### 4. `generate_booking_email`
+
 Generate a booking email template
+
 - **Parameters**:
   - `participantName` (string): Name of participant
-  - `email` (string): Email address  
+  - `email` (string): Email address
   - `specialRequests` (string, optional): Any special requirements
 - **Returns**: Formatted email template
 
@@ -52,6 +60,7 @@ Add the following to your Claude Desktop configuration file:
 ```
 
 **Steps**:
+
 1. Make sure your Next.js dev server is running: `npm run dev`
 2. Install mcp-remote globally: `npm install -g mcp-remote`
 3. Add the configuration above to your Claude Desktop config
@@ -121,19 +130,21 @@ const response = await fetch('http://localhost:3000/api/mcp', {
     method: 'tools/call',
     params: {
       name: 'get_tour_info',
-      arguments: {}
-    }
-  })
+      arguments: {},
+    },
+  }),
 });
 ```
 
 ## Development Setup
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - Next.js development server running
 
 ### Start the MCP Server
+
 ```bash
 # Start the Next.js development server
 npm run dev
@@ -143,6 +154,7 @@ npm run dev
 ```
 
 ### Test the Server
+
 ```bash
 # Run the test script
 npm run test:mcp
@@ -192,6 +204,7 @@ curl -v http://localhost:3000/api/mcp
 The MCP server is implemented as a Next.js API route at `app/api/mcp/route.ts` using Vercel's mcp-adapter. It provides a standardized interface for AI assistants to access Taiwan Bike Tour data and functionality.
 
 **Key Components**:
+
 - Next.js API route handler
 - MCP protocol implementation
 - Tour data and statistics

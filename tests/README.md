@@ -42,16 +42,20 @@ The project primarily relies on **smoke tests** to ensure core functionality wit
 ## Test Categories
 
 ### 🔥 Smoke Tests (`smoke.spec.ts`) - **PRIMARY**
+
 Essential functionality tests that verify:
+
 - Page loads without errors
 - Main content and navigation elements are present
 - No critical console errors (filtering out external service errors)
 - Basic responsive behavior
 
 ### 📋 Legacy Test Files
+
 Other test files exist but may have external dependencies that cause instability:
+
 - `homepage.spec.ts` - Homepage functionality tests
-- `itinerary.spec.ts` - Detailed itinerary feature tests  
+- `itinerary.spec.ts` - Detailed itinerary feature tests
 - `strava-integration.spec.ts` - Route integration tests
 
 These legacy tests are maintained but not part of the primary CI/CD validation due to their reliance on external iframe loading from Strava.
@@ -74,7 +78,7 @@ The project uses `playwright.config.ts` with these key settings:
 ✅ **Descriptive titles**: Clear test and step names  
 ✅ **BeforeEach hooks**: Common setup in `test.describe()` blocks  
 ✅ **Responsive testing**: Multiple viewport sizes  
-✅ **Accessibility**: Use `toMatchAriaSnapshot` where appropriate  
+✅ **Accessibility**: Use `toMatchAriaSnapshot` where appropriate
 
 ## Running Specific Tests
 
@@ -98,18 +102,21 @@ npm run test -- --debug
 ## CI/CD Integration
 
 GitHub Actions workflow (`.github/workflows/playwright.yml`) runs tests on:
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop`
 
 **Recommendation**: Update the workflow to run only smoke tests for stability:
+
 ```yaml
 - name: Run Playwright tests
   run: npm run test tests/smoke.spec.ts
 ```
 
 The workflow:
+
 1. Sets up Node.js 20
-2. Installs dependencies  
+2. Installs dependencies
 3. Installs Playwright browsers
 4. Builds the Next.js application
 5. Runs smoke tests (recommended) or all tests
@@ -120,7 +127,7 @@ The workflow:
 When adding new tests:
 
 1. **Follow naming convention**: `<feature>.spec.ts`
-2. **Use test.describe()**: Group related tests  
+2. **Use test.describe()**: Group related tests
 3. **Add beforeEach**: Common setup for navigation
 4. **Include test steps**: Break down complex tests
 5. **Test mobile + desktop**: Add responsive checks
@@ -129,21 +136,25 @@ When adding new tests:
 ## Troubleshooting
 
 ### Tests timing out
+
 - Check if dev server is running on port 3000
 - Verify no other processes are using the port
 - Use `domcontentloaded` instead of `networkidle` for faster loading
 
 ### Browser not found
+
 ```bash
 npx playwright install
 ```
 
 ### Test reports not generated
+
 ```bash
 npm run test:report
 ```
 
 ### Debug failing tests
+
 ```bash
 npm run test -- --debug --grep="failing test name"
 ```

@@ -7,32 +7,35 @@ const TourStats = () => {
   const [animatedValues, setAnimatedValues] = useState([0, 0, 0, 0]);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const stats = useMemo(() => [
-    {
-      number: '8',
-      targetValue: 8,
-      unit: 'Days',
-      description: 'Epic cycling adventure'
-    },
-    {
-      number: '750+',
-      targetValue: 750,
-      unit: 'KM',
-      description: 'Total distance covered'
-    },
-    {
-      number: '10,000+',
-      targetValue: 10000,
-      unit: 'M',
-      description: 'Total elevation gain'
-    },
-    {
-      number: '7',
-      targetValue: 7,
-      unit: 'Unique',
-      description: 'Accommodation experiences'
-    }
-  ], []);
+  const stats = useMemo(
+    () => [
+      {
+        number: '8',
+        targetValue: 8,
+        unit: 'Days',
+        description: 'Epic cycling adventure',
+      },
+      {
+        number: '750+',
+        targetValue: 750,
+        unit: 'KM',
+        description: 'Total distance covered',
+      },
+      {
+        number: '10,000+',
+        targetValue: 10000,
+        unit: 'M',
+        description: 'Total elevation gain',
+      },
+      {
+        number: '7',
+        targetValue: 7,
+        unit: 'Unique',
+        description: 'Accommodation experiences',
+      },
+    ],
+    []
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -65,8 +68,8 @@ const TourStats = () => {
       const timer = setInterval(() => {
         currentStep++;
         const newValue = Math.min(Math.floor(increment * currentStep), stat.targetValue);
-        
-        setAnimatedValues(prev => {
+
+        setAnimatedValues((prev) => {
           const updated = [...prev];
           updated[index] = newValue;
           return updated;
@@ -91,7 +94,7 @@ const TourStats = () => {
   };
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white"
     >
@@ -100,7 +103,7 @@ const TourStats = () => {
           <h2 className="text-3xl font-light mb-4">Tour by the Numbers</h2>
           <p className="text-blue-100">Experience Taiwan like never before</p>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <div key={stat.unit} className="text-center">

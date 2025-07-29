@@ -6,111 +6,111 @@ version: 2
 
 updates:
   # Node.js/npm ecosystem - Production dependencies
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "Australia/Sydney"
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Australia/Sydney'
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "deps"
-      prefix-development: "deps-dev"
-      include: "scope"
+      prefix: 'deps'
+      prefix-development: 'deps-dev'
+      include: 'scope'
     labels:
-      - "dependencies"
-      - "npm"
-      - "automated"
+      - 'dependencies'
+      - 'npm'
+      - 'automated'
     groups:
       # Group Next.js and React related updates
       nextjs-ecosystem:
         patterns:
-          - "next*"
-          - "react*"
-          - "@next/*"
-          - "eslint-config-next"
+          - 'next*'
+          - 'react*'
+          - '@next/*'
+          - 'eslint-config-next'
         update-types:
-          - "minor"
-          - "patch"
-      
+          - 'minor'
+          - 'patch'
+
       # Group TypeScript and tooling
       typescript-tooling:
         patterns:
-          - "typescript"
-          - "@types/*"
-          - "ts-*"
-          - "eslint*"
-          - "prettier*"
+          - 'typescript'
+          - '@types/*'
+          - 'ts-*'
+          - 'eslint*'
+          - 'prettier*'
         update-types:
-          - "minor"
-          - "patch"
-          
+          - 'minor'
+          - 'patch'
+
       # Group PostCSS and Tailwind CSS
       css-tooling:
         patterns:
-          - "tailwindcss"
-          - "postcss*"
-          - "autoprefixer"
-          - "@tailwindcss/*"
+          - 'tailwindcss'
+          - 'postcss*'
+          - 'autoprefixer'
+          - '@tailwindcss/*'
         update-types:
-          - "minor"
-          - "patch"
-    
+          - 'minor'
+          - 'patch'
+
     # Ignore major version updates for core dependencies during development
     ignore:
-      - dependency-name: "next"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "typescript"
-        update-types: ["version-update:semver-major"]
-    
+      - dependency-name: 'next'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+
     # Custom versioning strategy for better control
-    versioning-strategy: "increase-if-necessary"
+    versioning-strategy: 'increase-if-necessary'
 
   # GitHub Actions ecosystem
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "daily"
-      time: "10:00"
-      timezone: "Australia/Sydney"
+      interval: 'daily'
+      time: '10:00'
+      timezone: 'Australia/Sydney'
     open-pull-requests-limit: 3
     commit-message:
-      prefix: "ci"
-      include: "scope"
+      prefix: 'ci'
+      include: 'scope'
     labels:
-      - "dependencies"
-      - "github-actions"
-      - "ci-cd"
-      - "automated"
+      - 'dependencies'
+      - 'github-actions'
+      - 'ci-cd'
+      - 'automated'
     groups:
       # Group core GitHub Actions
       github-core-actions:
         patterns:
-          - "actions/*"
+          - 'actions/*'
         update-types:
-          - "minor"
-          - "patch"
-          
-      # Group deployment related actions  
+          - 'minor'
+          - 'patch'
+
+      # Group deployment related actions
       deployment-actions:
         patterns:
-          - "*deploy*"
-          - "*upload*"
-          - "*cache*"
+          - '*deploy*'
+          - '*upload*'
+          - '*cache*'
         update-types:
-          - "minor"
-          - "patch"
-    
+          - 'minor'
+          - 'patch'
+
     # Be more conservative with GitHub Actions major updates
     ignore:
-      - dependency-name: "actions/checkout"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "actions/setup-node"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "actions/cache"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: 'actions/checkout'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'actions/setup-node'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'actions/cache'
+        update-types: ['version-update:semver-major']

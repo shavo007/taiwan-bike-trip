@@ -15,12 +15,12 @@ jobs:
     if: >
       github.actor == 'dependabot[bot]' &&
       github.event.pull_request.user.login == 'dependabot[bot]'
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch full history
+          fetch-depth: 0 # Fetch full history
 
       - name: Fetch PR head commit
         run: |
@@ -31,11 +31,11 @@ jobs:
         id: deps
         run: |
           echo "Extracting dependency information from PR title..."
-          
+
           # Get PR title
           PR_TITLE="${{ github.event.pull_request.title }}"
           echo "PR Title: $PR_TITLE"
-          
+
           # Check if this is a group update
           if echo "$PR_TITLE" | grep -qi "group"; then
             echo "Detected group update, analyzing commit message for update types..."
@@ -110,9 +110,9 @@ jobs:
         run: |
           UPDATE_TYPE="${{ steps.deps.outputs.update_type }}"
           IS_SECURITY="${{ steps.security.outputs.is_security_update }}"
-          
+
           LABELS="dependencies"
-          
+
           # Add update type label
           if [ "$UPDATE_TYPE" = "patch" ]; then
             LABELS="$LABELS,dependencies-patch"
@@ -121,12 +121,12 @@ jobs:
           else
             LABELS="$LABELS,dependencies-major"
           fi
-          
+
           # Add security label if applicable
           if [ "$IS_SECURITY" = "true" ]; then
             LABELS="$LABELS,dependencies-security"
           fi
-          
+
           echo "Adding labels: $LABELS"
           gh pr edit ${{ github.event.pull_request.number }} --add-label "$LABELS"
         env:
@@ -138,10 +138,10 @@ jobs:
           (steps.deps.outputs.update_type == 'patch' || steps.deps.outputs.update_type == 'minor')
         run: |
           echo "Enabling auto-merge for ${{ steps.deps.outputs.update_type }} update"
-          
+
           # Enable auto-merge with squash (skip approval requirement for patch/minor updates)
           gh pr merge ${{ github.event.pull_request.number }} --auto --squash
-          
+
           echo "✅ Auto-merge enabled. PR will be merged automatically after all checks pass."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -152,10 +152,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Manual review required for ${{ steps.deps.outputs.update_type }} update"
-          
+
           # Create multiline comment using printf to avoid YAML issues
           COMMENT_MESSAGE=$(printf "🔍 **Dependabot Auto-merge Status**\n\nThis PR contains a **${{ steps.deps.outputs.update_type }}** update, which requires manual review.\n\nOnly **patch** and **minor** updates are automatically merged for security reasons.\n\nPlease review this PR manually and merge when appropriate.")
-          
+
           gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_MESSAGE"
 
       - name: Summary
@@ -166,7 +166,7 @@ jobs:
           echo "- **Safe Update:** ${{ steps.deps.outputs.safe_update }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Security Update:** ${{ steps.security.outputs.is_security_update }}" >> $GITHUB_STEP_SUMMARY
           echo "- **PR Number:** ${{ github.event.pull_request.number }}" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ "${{ steps.deps.outputs.safe_update }}" = "true" ]; then
             echo "- **Action:** Auto-approved and auto-merge enabled ✅" >> $GITHUB_STEP_SUMMARY
           else

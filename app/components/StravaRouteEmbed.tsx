@@ -15,13 +15,15 @@ const StravaRouteEmbed: React.FC<StravaRouteEmbedProps> = ({
   location,
   fullWidth = true,
   style = 'satellite',
-  mapHash = '9.94/43.7504/7.3901'
+  mapHash = '9.94/43.7504/7.3901',
 }) => {
   // Load Strava embed script
   useEffect(() => {
     // Check if script is already loaded
-    const existingScript = document.querySelector('script[src="https://strava-embeds.com/embed.js"]');
-    
+    const existingScript = document.querySelector(
+      'script[src="https://strava-embeds.com/embed.js"]'
+    );
+
     if (!existingScript) {
       const script = document.createElement('script');
       script.src = 'https://strava-embeds.com/embed.js';
@@ -34,13 +36,13 @@ const StravaRouteEmbed: React.FC<StravaRouteEmbedProps> = ({
 
   return (
     <div className="mb-4">
-      <div 
-        className="strava-embed-placeholder" 
-        data-embed-type="route" 
-        data-embed-id={routeId} 
-        data-full-width={fullWidth.toString()} 
-        data-style={style} 
-        data-map-hash={mapHash} 
+      <div
+        className="strava-embed-placeholder"
+        data-embed-type="route"
+        data-embed-id={routeId}
+        data-full-width={fullWidth.toString()}
+        data-style={style}
+        data-map-hash={mapHash}
         data-from-embed="true"
         style={{
           width: '100%',
@@ -52,7 +54,7 @@ const StravaRouteEmbed: React.FC<StravaRouteEmbedProps> = ({
           alignItems: isPlaceholder ? 'center' : 'initial',
           justifyContent: isPlaceholder ? 'center' : 'initial',
           color: '#6b7280',
-          fontSize: '14px'
+          fontSize: '14px',
         }}
       >
         {isPlaceholder && (
@@ -65,9 +67,7 @@ const StravaRouteEmbed: React.FC<StravaRouteEmbedProps> = ({
           </div>
         )}
       </div>
-      <div className="text-xs text-gray-500 mt-1 text-center">
-        Strava Route: {location}
-      </div>
+      <div className="text-xs text-gray-500 mt-1 text-center">Strava Route: {location}</div>
     </div>
   );
 };

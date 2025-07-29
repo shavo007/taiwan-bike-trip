@@ -6,11 +6,11 @@ const Footer = () => {
           <div>
             <h3 className="text-2xl font-light mb-4">Taiwan Bike Tour 2025</h3>
             <p className="text-gray-400 leading-relaxed">
-              An unforgettable cycling adventure along Taiwan&apos;s stunning east coast, 
-              combining breathtaking scenery with authentic cultural experiences.
+              An unforgettable cycling adventure along Taiwan&apos;s stunning east coast, combining
+              breathtaking scenery with authentic cultural experiences.
             </p>
           </div>
-          
+
           <div>
             <h4 className="text-lg font-medium mb-4">Tour Information</h4>
             <ul className="space-y-2 text-gray-400">
@@ -20,12 +20,12 @@ const Footer = () => {
               <li>🚐 Support vehicle provided</li>
             </ul>
           </div>
-          
+
           <div>
             <h4 className="text-lg font-medium mb-4">Contact</h4>
             <div className="space-y-2 text-gray-400">
               <p>Ready to join us?</p>
-              <a 
+              <a
                 href="mailto:hello@ekhoekho.global?subject=Taiwan Bike Tour 2025 - Contact Inquiry&body=Hi there,%0D%0A%0D%0AI'd like to get in touch about the Taiwan Bike Tour 2025. Please send me more information.%0D%0A%0D%0AThank you!"
                 className="bg-white text-black px-6 py-3 rounded-sm hover:bg-gray-100 transition-colors mt-4 inline-block"
               >
@@ -34,7 +34,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
           <p>&copy; 2025 Taiwan Bike Tour. All rights reserved.</p>
         </div>

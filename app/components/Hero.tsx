@@ -4,11 +4,11 @@ import Image from 'next/image';
 
 const Hero = () => {
   const basePath = process.env.NODE_ENV === 'production' ? '/taiwan-bike-trip' : '';
-  
+
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
-  
+
   return (
     <section className="relative h-screen">
       {/* Background Image */}
@@ -22,7 +22,7 @@ const Hero = () => {
         />
         <div className="absolute inset-0 bg-black/30" />
       </div>
-      
+
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-center items-start h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
         <div className="max-w-4xl">
@@ -30,19 +30,21 @@ const Hero = () => {
             October 26 - November 2, 2025
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light mb-6 leading-tight">
-            Taiwan Bike <br />Tour 2025
+            Taiwan Bike <br />
+            Tour 2025
           </h1>
           <p className="text-xl sm:text-2xl mb-8 max-w-2xl font-light leading-relaxed">
-            Experience the breathtaking beauty of Taiwan&apos;s east coast on an exclusive cycling adventure through dramatic cliffs, lush jungles, and seaside towns.
+            Experience the breathtaking beauty of Taiwan&apos;s east coast on an exclusive cycling
+            adventure through dramatic cliffs, lush jungles, and seaside towns.
           </p>
           <div className="flex gap-4 flex-col sm:flex-row">
-            <a 
+            <a
               href="mailto:hello@ekhoekho.global?subject=Taiwan Bike Tour 2025 - Booking Inquiry&body=Hi there,%0D%0A%0D%0AI'm interested in joining the Taiwan Bike Tour 2025 (October 26 - November 2). Could you please send me more details about booking and availability?%0D%0A%0D%0AThank you!"
               className="bg-white text-black px-8 py-4 rounded-sm hover:bg-gray-100 transition-all duration-300 text-lg font-light transform hover:scale-105 text-center"
             >
               Book Your Spot
             </a>
-            <button 
+            <button
               onClick={() => scrollToSection('itinerary')}
               className="border border-white text-white px-8 py-4 rounded-sm hover:bg-white/10 transition-all duration-300 text-lg font-light"
             >

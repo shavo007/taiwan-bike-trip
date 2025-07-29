@@ -7,30 +7,30 @@
 
 async function testMcpServer() {
   const serverUrl = 'http://localhost:3000/api/mcp';
-  
+
   console.log('🧪 Testing Taiwan Bike Tour MCP Server...');
   console.log(`📡 Server URL: ${serverUrl}`);
-  
+
   try {
     // Test basic server availability
     const response = await fetch(serverUrl, {
       method: 'GET',
       headers: {
-        'Accept': 'text/event-stream',
-        'Cache-Control': 'no-cache'
-      }
+        Accept: 'text/event-stream',
+        'Cache-Control': 'no-cache',
+      },
     });
-    
+
     console.log(`✅ Server responded with status: ${response.status}`);
     console.log(`📋 Response headers:`, Object.fromEntries(response.headers.entries()));
-    
+
     if (response.ok) {
       console.log('🎉 MCP Server is running successfully!');
       console.log('');
       console.log('🔧 Available tools:');
       console.log('  - get_tour_info: Get basic tour information');
       console.log('  - get_daily_itinerary: Get day-specific itinerary');
-      console.log('  - calculate_tour_stats: Calculate tour statistics');  
+      console.log('  - calculate_tour_stats: Calculate tour statistics');
       console.log('  - generate_booking_email: Generate booking emails');
       console.log('');
       console.log('📖 See MCP_SERVER.md for integration instructions');
@@ -48,7 +48,6 @@ async function testMcpServer() {
     } else {
       console.log('❌ Server error:', response.statusText);
     }
-    
   } catch (error) {
     console.log('❌ Connection failed:', error.message);
     console.log('💡 Make sure the development server is running: npm run dev');

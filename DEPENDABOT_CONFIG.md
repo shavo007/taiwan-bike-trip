@@ -3,6 +3,7 @@
 ## Overview
 
 This repository uses Dependabot to automatically keep dependencies up-to-date across two key ecosystems:
+
 - **Node.js/npm** - For Next.js application dependencies
 - **GitHub Actions** - For CI/CD workflow automation
 
@@ -33,6 +34,7 @@ This repository uses Dependabot to automatically keep dependencies up-to-date ac
 #### Ignored Updates
 
 Major version updates are ignored for:
+
 - `next` - Major Next.js updates require manual review
 - `react` / `react-dom` - React major versions need compatibility testing
 - `typescript` - TypeScript major versions may introduce breaking changes
@@ -57,6 +59,7 @@ Major version updates are ignored for:
 #### Ignored Updates
 
 Major version updates are ignored for:
+
 - `actions/checkout` - Core action, major updates need manual review
 - `actions/setup-node` - Node.js setup action, major changes may affect CI
 - `actions/cache` - Caching action, major updates could affect performance
@@ -70,6 +73,7 @@ Major version updates are ignored for:
 ## Labels Applied
 
 All Dependabot PRs are automatically labeled:
+
 - `dependencies` - General dependency update label
 - `npm` or `github-actions` - Ecosystem-specific labels
 - `automated` - Indicates automated update
@@ -78,6 +82,7 @@ All Dependabot PRs are automatically labeled:
 ## Versioning Strategy
 
 **Strategy**: `increase-if-necessary`
+
 - Maintains existing constraints when possible
 - Only increases constraints when necessary for the new version
 - Balances between stability and keeping dependencies current
@@ -99,6 +104,7 @@ All Dependabot PRs are automatically labeled:
 ## Manual Override
 
 To temporarily disable Dependabot:
+
 1. Set `open-pull-requests-limit: 0` for specific ecosystem
 2. Add dependencies to ignore list
 3. Modify schedule to less frequent intervals
@@ -114,17 +120,23 @@ To temporarily disable Dependabot:
 This repository includes an automated workflow (`.github/workflows/dependabot-auto-merge.yml`) that safely handles Dependabot PRs:
 
 ### Automatic Actions (Patch & Minor Updates)
+
 ✅ **Auto-approved and auto-merged** for:
+
 - Patch updates (e.g., `1.2.3` → `1.2.4`)
 - Minor updates (e.g., `1.2.0` → `1.3.0`)
 
 ### Manual Review Required (Major Updates)
+
 🔍 **Manual review** required for:
+
 - Major updates (e.g., `1.0.0` → `2.0.0`)
 - Unknown update patterns
 
 ### Security Handling
+
 🔒 **Special handling** for security updates:
+
 - Automatically labeled with `dependencies-security`
 - Can be auto-merged if patch/minor
 - Prioritized for immediate attention

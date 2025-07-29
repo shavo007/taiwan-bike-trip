@@ -1,5 +1,8 @@
 # Taiwan Bike Trip 2025
 
+[![Deploy to GitHub Pages](https://github.com/shavo007/taiwan-bike-trip/actions/workflows/deploy.yml/badge.svg)](https://github.com/shavo007/taiwan-bike-trip/actions/workflows/deploy.yml)
+[![Playwright Tests](https://github.com/shavo007/taiwan-bike-trip/actions/workflows/playwright.yml/badge.svg)](https://github.com/shavo007/taiwan-bike-trip/actions/workflows/playwright.yml)
+
 A Next.js static site showcasing an **8-day cycling adventure** through Taiwan (October 26 - November 2, 2025), featuring interactive itinerary, QR codes for accommodations, and comprehensive Strava route integration. Built for GitHub Pages deployment with static export.
 
 ## ✨ Features

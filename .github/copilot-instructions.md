@@ -50,6 +50,25 @@ npm run dev --turbopack  # Uses Turbopack for faster development builds
 npm run dev              # Standard development server
 ```
 
+### Git Hooks & Code Quality (Husky)
+
+```bash
+# Automatic pre-commit checks (runs on every git commit)
+# - Loads nvm environment for Node.js version consistency
+# - Runs lint-staged: ESLint --fix and Prettier formatting on staged files
+# - Executes smoke tests (npm run test:smoke) to ensure basic functionality
+
+# Manual quality commands
+npm run lint:fix         # Fix linting issues
+npx prettier --write .   # Format all files
+npm run test:smoke       # Run fast smoke tests only
+```
+
+- **Commit message validation**: Enforces conventional format `type(scope): description`
+- **Valid types**: feat, fix, docs, style, refactor, test, chore
+- **Node.js version**: Fixed to 22.17.1 via `.nvmrc` and nvm integration in hooks
+- **lint-staged**: Only processes staged files for efficiency
+
 ### Testing & Quality Assurance
 
 ```bash
@@ -71,14 +90,12 @@ npm run build  # Generates static export in ./out directory
 
 ### Testing Architecture & Patterns
 
-- **Auto-server startup**: `playwright.config.ts` starts dev server automatically for tests
+- **Auto-server startup**: `playwright.config.ts` starts dev server automatically for tests with nvm integration
 - **Multi-browser support**: Chromium, Firefox, WebKit (mobile browsers commented out)
 - **Test structure**: Feature-based test files in `/tests` directory
 - **Key test files**:
-  - `homepage-exploration.spec.ts`: Core website functionality (legacy)
-  - `strava-integration.spec.ts`: Route information and cycling features (legacy)
-  - `itinerary.spec.ts`: Tour schedule and accommodation features (legacy)
-  - `smoke.spec.ts`: Basic functionality validation (3 tests) - **PRIMARY**
+  - `smoke.spec.ts`: Basic functionality validation (3 tests) - **PRIMARY** for pre-commit hooks
+  - Legacy test files exist but smoke tests are the main validation
 
 ### Testing Strategy & Considerations
 
@@ -93,6 +110,8 @@ npm run build  # Generates static export in ./out directory
 - **Testing**: `.github/workflows/playwright.yml` - E2E testing on push/PR (main, develop branches)
 - **Path filtering**: Deployment skips for `.md`, Python scripts, PDF changes
 - **Optimizations**: Concurrent cancellation, npm cache, prefer-offline installs
+- **Smoke testing**: Post-deployment smoke tests run against deployed site using `BASE_URL` env var
+- **Node.js consistency**: All workflows use `node-version-file: '.nvmrc'` for version consistency
 
 ### Data Management Workflows
 
@@ -106,23 +125,6 @@ npm run build  # Generates static export in ./out directory
 - **Purpose**: Provides AI-accessible tour data tools (get_tour_info, get_daily_itinerary, calculate_tour_stats, generate_booking_email)
 - **Usage**: For development workflow automation and AI assistant integration
 - **Location**: API routes in `/app/api/mcp` directory
-
-#### Deployment Optimizations
-
-- **Automatic GitHub Pages deployment** via `.github/workflows/deploy.yml`
-- **Smart caching**: Next.js build cache + npm dependencies cached by lock file hash
-- **Path filters**: Skips builds for documentation/non-code changes (`.md`, Python scripts, PDFs)
-- **Optimized npm install**: Uses `--prefer-offline --no-audit --no-fund` for faster CI installs
-- **Node.js 20**: Uses latest LTS for better performance vs original Node 18
-- **Concurrency control**: Prevents conflicting deployments with `cancel-in-progress`
-
-#### Testing Infrastructure
-
-- **Playwright ^1.54.1**: Modern E2E testing with auto-retrying assertions and web-first patterns
-- **Test execution**: `npm test` runs all tests, `npm run test:ui` for interactive mode
-- **Multi-browser CI**: Tests run on Chromium, Firefox, WebKit in GitHub Actions
-- **Auto server management**: Tests automatically start/stop dev server via `webServer` config
-- **Test patterns**: Use `test.step()` for grouped interactions, prefer role-based locators (`getByRole`, `getByLabel`)
 
 ## Project-Specific Conventions
 
@@ -161,21 +163,6 @@ npm run build  # Generates static export in ./out directory
 - **Typography**: `font-light` for headers, `text-2xl font-light` for statistics
 - **Responsive grids**: Mobile-first with `md:` and `lg:` breakpoints
 
-## Utilities & Scripts
-
-### Python QR Extraction (Development Only)
-
-- `extract_qr_codes.py`: Extracts QR codes from `bike_accommodation.pdf` using `pdfplumber`, `cv2`, `pyzbar`
-- `extract_qr_from_pngs.py`: Alternative PNG-based extraction
-- Used for initial data extraction from PDF documents, not part of web app build process
-- Dependencies not included in package.json (development/data preparation only)
-
-### File Organization
-
-- Component files: PascalCase (e.g., `ItineraryEnhanced.tsx`)
-- Utility scripts: snake_case (e.g., `extract_qr_codes.py`)
-- Static assets: `public/images/` for images, `public/` for icons
-
 ## Critical Dependencies & Compatibility
 
 - **React 19 + Next.js 15** with TypeScript for latest features
@@ -183,3 +170,5 @@ npm run build  # Generates static export in ./out directory
 - **Tailwind CSS v4** for styling with PostCSS integration
 - **Playwright ^1.54.1**: E2E testing framework with HTML reporting and multi-browser support
 - **GitHub Pages deployment**: Specific `next.config.ts` settings for static export and subdirectory hosting
+- **Husky + lint-staged + Prettier**: Git hooks for automated code quality enforcement
+- **Node.js 22.17.1**: Specified in `.nvmrc`, critical for nvm environment consistency in hooks and CI

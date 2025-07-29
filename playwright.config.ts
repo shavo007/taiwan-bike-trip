@@ -66,7 +66,9 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: 'source ~/.nvm/nvm.sh && nvm use && npm run dev',
+        command: process.env.CI
+          ? 'npm run dev' // In CI, Node.js is already set up correctly
+          : 'bash -c "source ~/.nvm/nvm.sh && nvm use && npm run dev"', // Local dev with nvm
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
         timeout: 120 * 1000,

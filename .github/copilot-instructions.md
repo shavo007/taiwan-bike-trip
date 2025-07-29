@@ -90,12 +90,13 @@ npm run build  # Generates static export in ./out directory
 
 ### Testing Architecture & Patterns
 
-- **Auto-server startup**: `playwright.config.ts` starts dev server automatically for tests with nvm integration
+- **Auto-server startup**: `playwright.config.ts` starts dev server automatically for tests with environment-specific nvm integration
 - **Multi-browser support**: Chromium, Firefox, WebKit (mobile browsers commented out)
 - **Test structure**: Feature-based test files in `/tests` directory
 - **Key test files**:
   - `smoke.spec.ts`: Basic functionality validation (3 tests) - **PRIMARY** for pre-commit hooks
   - Legacy test files exist but smoke tests are the main validation
+- **Environment handling**: CI uses direct `npm run dev`, local development uses nvm via bash
 
 ### Testing Strategy & Considerations
 

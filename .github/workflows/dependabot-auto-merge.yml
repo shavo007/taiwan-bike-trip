@@ -76,15 +76,46 @@ jobs:
               echo "Could not determine update type for group update"
             fi
           else
-            # Individual dependency update - use existing regex logic
-            if echo "$PR_TITLE" | grep -qE "(patch|Bumps.*from.*[0-9]+\.[0-9]+\.[0-9]+.*to.*[0-9]+\.[0-9]+\.[0-9]+)"; then
+            # Individual dependency update - improved regex logic for modern Dependabot formats
+            # Extract version numbers for precise classification
+            if echo "$PR_TITLE" | grep -qE "[Bb]umps?.*from.*[0-9]+\.[0-9]+\.[0-9]+.*to.*[0-9]+\.[0-9]+\.[0-9]+"; then
+              # Extract versions to analyze the actual change type
+              FROM_VERSION=$(echo "$PR_TITLE" | grep -oE "from [0-9]+\.[0-9]+\.[0-9]+" | grep -oE "[0-9]+\.[0-9]+\.[0-9]+")
+              TO_VERSION=$(echo "$PR_TITLE" | grep -oE "to [0-9]+\.[0-9]+\.[0-9]+" | grep -oE "[0-9]+\.[0-9]+\.[0-9]+")
+              
+              if [ -n "$FROM_VERSION" ] && [ -n "$TO_VERSION" ]; then
+                FROM_MAJOR=$(echo "$FROM_VERSION" | cut -d. -f1)
+                FROM_MINOR=$(echo "$FROM_VERSION" | cut -d. -f2)
+                FROM_PATCH=$(echo "$FROM_VERSION" | cut -d. -f3)
+                TO_MAJOR=$(echo "$TO_VERSION" | cut -d. -f1)
+                TO_MINOR=$(echo "$TO_VERSION" | cut -d. -f2)
+                TO_PATCH=$(echo "$TO_VERSION" | cut -d. -f3)
+                
+                echo "Version analysis: $FROM_VERSION → $TO_VERSION"
+                echo "Major: $FROM_MAJOR → $TO_MAJOR, Minor: $FROM_MINOR → $TO_MINOR, Patch: $FROM_PATCH → $TO_PATCH"
+                
+                if [ "$FROM_MAJOR" != "$TO_MAJOR" ]; then
+                  echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
+                  echo "safe_update=false" >> $GITHUB_OUTPUT
+                  echo "Detected major update (major version changed)"
+                elif [ "$FROM_MINOR" != "$TO_MINOR" ]; then
+                  echo "update_type=minor" >> $GITHUB_OUTPUT
+                  echo "safe_update=true" >> $GITHUB_OUTPUT
+                  echo "Detected minor update (minor version changed)"
+                else
+                  echo "update_type=patch" >> $GITHUB_OUTPUT
+                  echo "safe_update=true" >> $GITHUB_OUTPUT
+                  echo "Detected patch update (only patch version changed)"
+                fi
+              else
+                echo "update_type=patch" >> $GITHUB_OUTPUT
+                echo "safe_update=true" >> $GITHUB_OUTPUT
+                echo "Detected patch update (fallback - bump format detected)"
+              fi
+            elif echo "$PR_TITLE" | grep -qiE "patch"; then
               echo "update_type=patch" >> $GITHUB_OUTPUT
               echo "safe_update=true" >> $GITHUB_OUTPUT
-              echo "Detected patch update"
-            elif echo "$PR_TITLE" | grep -qE "(minor|Bumps.*from.*[0-9]+\.[0-9]+\..*to.*[0-9]+\.[0-9]+\..*)" && ! echo "$PR_TITLE" | grep -qE "to.*[0-9]+[0-9]\.[0-9]"; then
-              echo "update_type=minor" >> $GITHUB_OUTPUT
-              echo "safe_update=true" >> $GITHUB_OUTPUT
-              echo "Detected minor update"
+              echo "Detected patch update (patch keyword)"
             else
               echo "update_type=major_or_unknown" >> $GITHUB_OUTPUT
               echo "safe_update=false" >> $GITHUB_OUTPUT

@@ -170,4 +170,4 @@ Our **smoke tests** verify essential project functionality:
 
 **Note**: More comprehensive feature testing (QR codes, Strava integration, detailed itinerary) is available in legacy test files but excluded from CI/CD due to external service dependencies that can cause test instability.
 
-For more details, see the [project-specific coding instructions](.github/copilot-instructions.md).
+For more details, see the [project-specific coding instructions](../.github/copilot-instructions.md).

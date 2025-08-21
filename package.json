@@ -13,7 +13,11 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docs:sync": "node scripts/sync-docs.js",
+    "docs:validate": "node scripts/validate-docs.js",
+    "docs:check-links": "node scripts/check-links.js",
+    "docs:update-structure": "node scripts/update-project-structure.js"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.5",

@@ -89,7 +89,33 @@ npx playwright show-report
 
 This project is configured for automatic deployment to GitHub Pages using GitHub Actions.
 
-### Setup Instructions:
+#
+
+#
+
+### Documentation Sync
+
+This project includes an automated documentation sync workflow that:
+
+- **Detects changes** to project structure, dependencies, and workflows
+- **Auto-updates** documentation files to keep them in sync
+- **Validates** documentation consistency and accuracy
+- **Creates PRs** for documentation updates when needed
+
+The workflow runs automatically when relevant files are modified and can also be triggered manually.
+
+## Documentation Sync
+
+This project includes an automated documentation sync workflow that:
+
+- **Detects changes** to project structure, dependencies, and workflows
+- **Auto-updates** documentation files to keep them in sync
+- **Validates** documentation consistency and accuracy
+- **Creates PRs** for documentation updates when needed
+
+The workflow runs automatically when relevant files are modified and can also be triggered manually.
+
+## Setup Instructions:
 
 1. **Push your code to GitHub**
 2. **Enable GitHub Pages in your repository settings:**
@@ -111,34 +137,23 @@ npm run build
 
 ```
 ├── app/
-│   ├── components/
-│   │   ├── Hero.tsx                 # Hero section with tour overview
-│   │   ├── Features.tsx             # Key features showcase
-│   │   ├── TourStats.tsx           # Animated statistics
-│   │   ├── Navigation.tsx          # Site navigation
-│   │   ├── Footer.tsx              # Site footer
-│   │   ├── Itinerary.tsx           # Compact grid itinerary view
-│   │   ├── ItineraryEnhanced.tsx   # Primary detailed itinerary
-│   │   ├── QRCodeDisplay.tsx       # QR code generation with bubble tea branding
-│   │   └── StravaRouteEmbed.tsx    # Strava route integration
-│   ├── globals.css                 # Global styles
-│   ├── layout.tsx                  # Root layout
-│   └── page.tsx                    # Main page
-├── tests/                          # Playwright test suite
-│   ├── homepage-exploration.spec.ts # Core website functionality
-│   ├── strava-integration.spec.ts   # Strava route testing
-│   ├── itinerary.spec.ts           # Itinerary feature testing
-│   ├── homepage.spec.ts            # Basic homepage tests
-│   └── smoke.spec.ts               # Smoke tests
+│   ├── page.tsx              # Main layout
+│   └── components/         # React components
 ├── public/
-│   └── images/                     # Static images
-├── .github/
-│   ├── workflows/
-│   │   ├── deploy.yml              # GitHub Pages deployment
-│   │   └── playwright.yml          # Playwright CI/CD
-│   └── instructions/               # Development guidelines
-├── playwright.config.ts            # Playwright configuration
-└── next.config.ts                  # Next.js configuration (static export)
+├── scripts/
+├── tests/
+│   ├── smoke.spec.ts        # Smoke tests
+│   └── *.spec.ts           # Feature tests
+├── DEPENDABOT_CONFIG.md
+├── DEPLOYMENT_OPTIMIZATIONS.md
+├── DOCUMENTATION_SYNC.md
+├── LICENSE
+├── MCP_SERVER.md
+├── next.config.ts # Next.js configuration (static export)
+├── package.json # Dependencies and scripts
+├── playwright.config.ts # Playwright test configuration
+├── README.md # Project documentation
+└── tsconfig.json # TypeScript configuration
 ```
 
 ## 🛠️ Technologies Used
@@ -224,6 +239,10 @@ npx prettier --write . # Format all files
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
+
+### Documentation
+
+This project includes automated documentation synchronization. See [DOCUMENTATION_SYNC.md](DOCUMENTATION_SYNC.md) for details on how documentation is kept up-to-date automatically.
 
 ## 📄 License
 

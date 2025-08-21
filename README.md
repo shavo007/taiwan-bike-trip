@@ -93,7 +93,45 @@ This project is configured for automatic deployment to GitHub Pages using GitHub
 
 #
 
+#
+
+#
+
+#
 ### Documentation Sync
+
+This project includes an automated documentation sync workflow that:
+
+- **Detects changes** to project structure, dependencies, and workflows
+- **Auto-updates** documentation files to keep them in sync
+- **Validates** documentation consistency and accuracy
+- **Creates PRs** for documentation updates when needed
+
+The workflow runs automatically when relevant files are modified and can also be triggered manually.
+
+## Documentation Sync
+
+This project includes an automated documentation sync workflow that:
+
+- **Detects changes** to project structure, dependencies, and workflows
+- **Auto-updates** documentation files to keep them in sync
+- **Validates** documentation consistency and accuracy
+- **Creates PRs** for documentation updates when needed
+
+The workflow runs automatically when relevant files are modified and can also be triggered manually.
+
+## Documentation Sync
+
+This project includes an automated documentation sync workflow that:
+
+- **Detects changes** to project structure, dependencies, and workflows
+- **Auto-updates** documentation files to keep them in sync
+- **Validates** documentation consistency and accuracy
+- **Creates PRs** for documentation updates when needed
+
+The workflow runs automatically when relevant files are modified and can also be triggered manually.
+
+## Documentation Sync
 
 This project includes an automated documentation sync workflow that:
 

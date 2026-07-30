@@ -109,6 +109,7 @@ npm run build  # Generates static export in ./out directory
 
 - **Deployment**: `.github/workflows/deploy.yml` - Auto-deploy to GitHub Pages on main branch push
 - **Testing**: `.github/workflows/playwright.yml` - E2E testing on push/PR (main, develop branches)
+- **Dependabot**: `.github/workflows/dependabot-auto-merge.yml` - Automated dependency updates and merging
 - **Path filtering**: Deployment skips for `.md`, Python scripts, PDF changes
 - **Optimizations**: Concurrent cancellation, npm cache, prefer-offline installs
 - **Smoke testing**: Post-deployment smoke tests run against deployed site using `BASE_URL` env var
@@ -122,10 +123,11 @@ npm run build  # Generates static export in ./out directory
 
 ### MCP Server Integration (Development Tool)
 
-- **Endpoint**: `http://localhost:3000/api/mcp` when dev server running
+- **Status**: Documentation and configuration available for future implementation
+- **Planned Endpoint**: `http://localhost:3000/api/mcp` when implemented
 - **Purpose**: Provides AI-accessible tour data tools (get_tour_info, get_daily_itinerary, calculate_tour_stats, generate_booking_email)
-- **Usage**: For development workflow automation and AI assistant integration
-- **Location**: API routes in `/app/api/mcp` directory
+- **Current Files**: Configuration in `.vscode/mcp.json`, documentation in `MCP_SERVER.md`, test script `test-mcp.js`
+- **Implementation Status**: API routes not yet implemented - documentation exists as reference
 
 ## Project-Specific Conventions
 
@@ -166,10 +168,10 @@ npm run build  # Generates static export in ./out directory
 
 ## Critical Dependencies & Compatibility
 
-- **React 19 + Next.js 15** with TypeScript for latest features
-- **QR generation**: Requires both `qrcode` and `@types/qrcode` packages
-- **Tailwind CSS v4** for styling with PostCSS integration
-- **Playwright ^1.54.1**: E2E testing framework with HTML reporting and multi-browser support
+- **React 19.1.1 + Next.js 15.4.5** with TypeScript 5.8.3 for latest features
+- **QR generation**: Requires both `qrcode@1.5.4` and `@types/qrcode@1.5.5` packages
+- **Tailwind CSS 4.1.11** for styling with PostCSS integration
+- **Playwright 1.54.1**: E2E testing framework with HTML reporting and multi-browser support
 - **GitHub Pages deployment**: Specific `next.config.ts` settings for static export and subdirectory hosting
-- **Husky + lint-staged + Prettier**: Git hooks for automated code quality enforcement
+- **Husky 9.1.7 + lint-staged 16.1.2 + Prettier 3.6.2**: Git hooks for automated code quality enforcement
 - **Node.js 22.17.1**: Specified in `.nvmrc`, critical for nvm environment consistency in hooks and CI

@@ -5,5 +5,8 @@ export NVM_DIR="$HOME/.nvm"
 # Run lint-staged for formatting and linting
 npx lint-staged
 
+# Quick documentation sync check (warnings only)
+npm run docs:sync
+
 # Run smoke tests to ensure basic functionality works
 npm run test:smoke

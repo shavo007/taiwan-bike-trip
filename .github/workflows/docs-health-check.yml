@@ -1,0 +1,125 @@
+name: Documentation Health Check
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Run comprehensive documentation validation
+        id: validation
+        run: |
+          echo "## Documentation Health Report" > report.md
+          echo "" >> report.md
+          
+          # Run validation and capture output
+          if npm run docs:validate > validation.log 2>&1; then
+            echo "✅ **Documentation validation passed**" >> report.md
+            echo "validation_passed=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ **Documentation validation failed**" >> report.md
+            echo "validation_passed=false" >> $GITHUB_OUTPUT
+            echo "" >> report.md
+            echo "### Validation Errors:" >> report.md
+            echo '```' >> report.md
+            cat validation.log >> report.md
+            echo '```' >> report.md
+          fi
+          
+          echo "" >> report.md
+          
+          # Run link checking
+          if npm run docs:check-links > links.log 2>&1; then
+            echo "✅ **Link validation passed**" >> report.md
+          else
+            echo "❌ **Link validation found issues**" >> report.md
+            echo "" >> report.md
+            echo "### Link Issues:" >> report.md
+            echo '```' >> report.md
+            cat links.log >> report.md
+            echo '```' >> report.md
+          fi
+          
+          echo "" >> report.md
+          echo "### Recommendations:" >> report.md
+          echo "- Run \`npm run docs:sync\` to auto-fix structure issues" >> report.md
+          echo "- Check and fix broken links manually" >> report.md
+          echo "- Review and update outdated documentation sections" >> report.md
+          echo "" >> report.md
+          echo "---" >> report.md
+          echo "*This report was automatically generated on $(date)*" >> report.md
+
+      - name: Create issue for documentation problems
+        if: steps.validation.outputs.validation_passed == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('report.md', 'utf8');
+            
+            // Check if there's already an open issue
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'documentation,automated'
+            });
+            
+            const existingIssue = issues.find(issue => 
+              issue.title.includes('Documentation Health Check Failed')
+            );
+            
+            if (existingIssue) {
+              // Update existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `## Updated Health Check Report\n\n${report}`
+              });
+              
+              console.log(`Updated existing issue #${existingIssue.number}`);
+            } else {
+              // Create new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '📝 Documentation Health Check Failed',
+                body: report,
+                labels: ['documentation', 'automated', 'bug']
+              });
+              
+              console.log('Created new documentation health check issue');
+            }
+
+      - name: Upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-health-report
+          path: |
+            report.md
+            validation.log
+            links.log
+          retention-days: 30
